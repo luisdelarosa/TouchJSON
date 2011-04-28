@@ -70,6 +70,26 @@
 	STAssertEqualObjects(theArray, theObject, nil);
     }
 
+-(void)testRootArrayOfDictionariesUsingDeserialize
+    {
+	// This test was motivated by http://stackoverflow.com/questions/288412/deserializing-a-complex-json-result-array-of-dictionaries-with-touchjson
+	// This shows that TouchJSON can be used to deserialize an array of dictionaries, where the array is at the top level.
+	NSString *theSource = @"[{\"id\": \"123456\", \"name\": \"touchjson\"}, {\"id\": \"3456\", \"name\": \"bleh\"}]";
+	NSData *theData = [theSource dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	id theObject = [[CJSONDeserializer deserializer] deserialize:theData error:nil];
+	NSArray *theArray = [NSArray arrayWithObjects:
+						 [NSDictionary dictionaryWithObjectsAndKeys:
+						  @"123456", @"id",
+						  @"touchjson", @"name",
+						  nil],
+						 [NSDictionary dictionaryWithObjectsAndKeys:
+						  @"3456", @"id",
+						  @"bleh", @"name",
+						  nil],
+						 NULL];
+	STAssertEqualObjects(theArray, theObject, nil);
+    }
+
 -(void)testDeserializeDictionaryWithNonDictionary
     {
 	NSString *emptyArrayInJSON = @"[]";
