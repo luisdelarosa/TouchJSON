@@ -61,6 +61,15 @@
 	STAssertEqualObjects(theArray, theObject, nil);
     }
 
+-(void)testRootArrayUsingDeserialize
+    {
+	NSString *theSource = @"[\"a\",\"b\",\"c\"]";
+	NSData *theData = [theSource dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	id theObject = [[CJSONDeserializer deserializer] deserialize:theData error:nil];
+	NSArray *theArray = [NSArray arrayWithObjects:@"a", @"b", @"c", NULL];
+	STAssertEqualObjects(theArray, theObject, nil);
+    }
+
 -(void)testDeserializeDictionaryWithNonDictionary
     {
 	NSString *emptyArrayInJSON = @"[]";
